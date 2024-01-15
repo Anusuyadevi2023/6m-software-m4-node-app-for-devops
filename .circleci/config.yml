@@ -1,29 +1,26 @@
 version: 2.1
 
-orbs:
-  docker: circleci/docker@2.4.0
-
 jobs:
   build:
     docker:
       - image: cimg/node:16.10
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: npm
-      - run: |
-          echo "Installing dependencies..."
-          npm install
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Build
+          command: npm run build
+
   test:
     docker:
       - image: cimg/node:16.10
     steps:
       - checkout
-      - node/install-packages:
-          pkg-manager: npm
-      - run: |
-          echo "Running tests..."
-          npm run test
+      - run:
+          name: Run Tests
+          command: npm run test
 
   build-and-push:
     docker:
