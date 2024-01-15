@@ -24,7 +24,7 @@ jobs:
       - run: |
           echo "Running tests..."
           npm run test
-          
+
   build-and-push:
     docker:
       - image: cimg/node:16.10
@@ -41,6 +41,8 @@ jobs:
           name: Build and Push Docker Image
           command: |
             docker build -t anusuyadevi2024/circleci_sample:latest .
+            echo "DOCKER_USERNAME: $DOCKER_USERNAME"
+            echo "DOCKER_PASSWORD: $DOCKER_PASSWORD"
             echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
             docker push anusuyadevi2024/circleci_sample:latest
 workflows:
