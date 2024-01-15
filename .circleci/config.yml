@@ -24,20 +24,25 @@ jobs:
       - run: |
           echo "Running tests..."
           npm run test
-
+          
   build-and-push:
     docker:
-      - image: anusuyadevi2024/circleci_sample:latest
+      - image: cimg/node:16.10
     steps:
       - checkout
-      - setup_remote_docker
+      - setup_remote_docker:
+          docker_layer_caching: true
+      - run:
+          name: Install Docker
+          command: |
+            sudo apt-get update
+            sudo apt-get -y install docker-ce
       - run:
           name: Build and Push Docker Image
           command: |
             docker build -t anusuyadevi2024/circleci_sample:latest .
             echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
             docker push anusuyadevi2024/circleci_sample:latest
-
 workflows:
   simple_workflow:
     jobs:
