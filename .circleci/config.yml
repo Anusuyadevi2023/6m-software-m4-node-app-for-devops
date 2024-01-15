@@ -2,28 +2,38 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.0.1
-
+  
 jobs:
   build:
     docker:
       - image: cimg/node:16.10
     steps:
       - checkout
-      - run:
-          name: Install Dependencies
-          command: npm install
-      - run:
-          name: Build
-          command: npm run build
-
+      - node/install-packages:
+          pkg-manager: npm
+      - run: |
+          echo "Installing dependencies..."
+          npm install
   test:
     docker:
       - image: cimg/node:16.10
     steps:
       - checkout
-      - run:
-          name: Run Tests
-          command: npm run test
+      - node/install-packages:
+          pkg-manager: npm
+      - run: |
+          echo "Running tests..."
+          npm run test
+  optional_publish:
+    # Assignment
+
+workflows:
+  simple_workflow:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build   
 
   # build-and-push:
   #   docker:
@@ -47,10 +57,3 @@ jobs:
 #           requires:
 #             - test
 
-workflows:
-  simple_workflow:
-    jobs:
-      - build
-      - test:
-          requires:
-            - build 
