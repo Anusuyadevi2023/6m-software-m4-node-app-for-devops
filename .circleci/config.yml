@@ -6,7 +6,7 @@ orbs:
 jobs:
   test:
     docker:
-      - image: mycirclecisampleapp:latest 
+      - image: anusuyadevi2024/circleci_sample:latest 
     steps:
       - run:
           name: Run Tests
