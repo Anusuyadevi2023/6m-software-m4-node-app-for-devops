@@ -2,7 +2,7 @@ version: 2.1
 
 orbs:
   node: circleci/node@5.0.1
-  
+
 jobs:
   build:
     docker:
@@ -25,24 +25,32 @@ jobs:
           name: Run Tests
           command: npm run test
 
-  build-and-push:
-    docker:
-      - image: anusuyadevi2024/circleci_sample:latest
-    steps:
-      - checkout
-      - setup_remote_docker
-      - run:
-          name: Build and Push Docker Image
-          command: |
-            docker build -t your-docker-username/your-docker-repo:latest .
-            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-            docker push your-docker-username/your-docker-repo:latest
+  # build-and-push:
+  #   docker:
+  #     - image: anusuyadevi2024/circleci_sample:latest
+  #   steps:
+  #     - checkout
+  #     - setup_remote_docker
+  #     - run:
+  #         name: Build and Push Docker Image
+  #         command: |
+  #           docker build -t your-docker-username/your-docker-repo:latest .
+  #           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  #           docker push your-docker-username/your-docker-repo:latest
+
+# workflows:
+#   version: 2
+#   build:
+#     jobs:
+#       - test
+#       - build-and-push:
+#           requires:
+#             - test
 
 workflows:
-  version: 2
-  build:
+  simple_workflow:
     jobs:
-      - test
-      - build-and-push:
+      - build
+      - test:
           requires:
-            - test
+            - build 
