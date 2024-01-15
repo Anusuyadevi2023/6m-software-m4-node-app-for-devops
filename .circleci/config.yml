@@ -29,5 +29,5 @@ workflows:
     jobs:
       - test
       - build-and-push:
-          requires:
-            - test
+            requires:
+              - test
