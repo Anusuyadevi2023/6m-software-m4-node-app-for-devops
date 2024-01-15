@@ -1,46 +1,33 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@5.0.1
-  
+  docker: circleci/docker@24.0.7
+
 jobs:
-  build:
-    docker:
-      - image: cimg/node:16.10
-    steps:
-      - checkout
-      - node/install-packages:
-          pkg-manager: npm
-      - run: |
-          echo "Installing dependencies..."
-          npm install
   test:
     docker:
-      - image: cimg/node:16.10
+      - image: mycirclecisampleapp:latest 
     steps:
-      - checkout
-      - node/install-packages:
-          pkg-manager: npm
-      - run: |
-          echo "Running tests..."
-          npm run test
+      - run: 
+
   build-and-push:
     docker:
-      - image: mycirclecisampleapp:1.0.0 
+      - image: anusuyadevi2024/circleci_sample:latest
     steps:
       - checkout
       - setup_remote_docker
       - run:
           name: Build and Push Docker Image
           command: |
-            docker build -t anusuyadevi2024/circleci_sample:latest .
+            docker build -t your-docker-username/your-docker-repo:latest .
             echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-            docker push anusuyadevi2024/circleci_sample:latest
+            docker push your-docker-username/your-docker-repo:latest
 
 workflows:
-  simple_workflow:
+  version: 2
+  build:
     jobs:
-      - build
-      - test:
+      - test
+      - build-and-push:
           requires:
-            - build   
+            - test
