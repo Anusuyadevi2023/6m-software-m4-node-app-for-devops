@@ -91,11 +91,10 @@ jobs:
 #             - test
 #       - pull-and-deploy:
 #           requires:
-#             - publish            
+#             - publish
 #       # - deploy:
 #       #     requires:
 #       #       - publish
-
 
 workflows:
   version: 2
@@ -126,5 +125,3 @@ workflows:
             branches:
               only:
                 - release
-
-
