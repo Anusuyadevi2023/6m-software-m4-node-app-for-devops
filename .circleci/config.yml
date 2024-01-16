@@ -60,9 +60,10 @@ workflows:
       - test:
           requires:
             - build
-      - publish:
-          requires:
-            - test
+      # - publish:
+      #     requires:
+      #       - test
       - deploy:
           requires:
-            - publish
+            # - publish
+            -test
