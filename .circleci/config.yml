@@ -110,13 +110,13 @@ workflows:
             branches:
               only:
                 - release
-      - deploy:
-          requires:
-            - publish
-          filters:
-            branches:
-              only:
-                - release
+      # - deploy:
+      #     requires:
+      #       - publish
+      #     filters:
+      #       branches:
+      #         only:
+      #           - release
       - pull-and-deploy:
           requires:
             - publish
