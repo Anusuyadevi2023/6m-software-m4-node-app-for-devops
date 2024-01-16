@@ -25,33 +25,22 @@ jobs:
           echo “Running tests...”
           npm run test
   
-  publish:
-  #   executor: docker/docker
-  #   steps:
-  #     - setup_remote_docker
-  #     - checkout
-  #     - docker/check
-  #     - docker/build:
-  #         image: anusuyadevi2024/circleci_sample
-  #     echo "DOCKER_USERNAME: $DOCKER_USERNAME"
-  #     echo "DOCKER_PASSWORD: $DOCKER_PASSWORD"
-  #     echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  #     - docker/push:
-  #         image: anusuyadevi2024/circleci_sample
-      
+  optional_publish:
+    #Assignment
+    
   deploy:
     docker:
-        - image: cimg/node:16.10
+      - image: cimg/node:16.10
     steps:
-        - setup_remote_docker 
-        - checkout     
-        - heroku/install     
-        - run:
-            name: Heroku Container Push
-            command: | 
-                heroku container:login
-                heroku container:push web -a anusuyadevi-su-devops
-                heroku container:release web -a anusuyadevi-su-devops
+      - setup_remote_docker 
+      - checkout     
+      - heroku/install     
+      - run:
+          name: Heroku Container Push
+          command: | 
+              heroku container:login
+              heroku container:push web -a anusuyadevi-su-devops
+              heroku container:release web -a anusuyadevi-su-devops
 
 workflows:
   simple_workflow:
