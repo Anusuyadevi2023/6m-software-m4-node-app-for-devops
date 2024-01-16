@@ -24,7 +24,7 @@ jobs:
       - run: |
           echo “Running tests...”
           npm run test
-  
+
   publish:
     # executor: docker/docker
     # steps:
@@ -54,12 +54,12 @@ jobs:
   #   docker:
   #       - image: cimg/node:16.10
   #   steps:
-  #       - setup_remote_docker      
+  #       - setup_remote_docker
   #       - heroku/install
   #       - checkout
   #       - run:
   #           name: Heroku Container Push
-  #           command: | 
+  #           command: |
   #               heroku container:login
   #               heroku container:push web -a anusuyadevi-su-devops
   #               heroku container:release web -a anusuyadevi-su-devops
@@ -67,19 +67,19 @@ jobs:
     docker:
       -image: cimg/node:16.10
     steps:
-        - setup_remote_docker      
-        - heroku/install
-        - docker/pull:
-            images: anusuyadevi2024/circleci_sample:v1.0.1
-        - run:
-            name: Heroku Container Push With Image From Docker Hub
-            command: | 
-                heroku container:login
-                docker tag anusuyadevi2024/circleci_sample:v1.0.1 registry.heroku.com/anusuyadevi-su-devops/web
-                # format ---docker tag <image name from docker hub> registry.heroku.com/<app-name>/web
-                docker push registry.heroku.com/anusuyadevi-su-devops/web
-                # format ---docker push registry.heroku.com/<app-name>/web
-                heroku container:release web -a anusuyadevi-su-devops
+      - setup_remote_docker
+      - heroku/install
+      - docker/pull:
+          images: anusuyadevi2024/circleci_sample:v1.0.1
+      - run:
+          name: Heroku Container Push With Image From Docker Hub
+          command: |
+            heroku container:login
+            docker tag anusuyadevi2024/circleci_sample:v1.0.1 registry.heroku.com/anusuyadevi-su-devops/web
+            # format ---docker tag <image name from docker hub> registry.heroku.com/<app-name>/web
+            docker push registry.heroku.com/anusuyadevi-su-devops/web
+            # format ---docker push registry.heroku.com/<app-name>/web
+            heroku container:release web -a anusuyadevi-su-devops
 
 workflows:
   simple_workflow:
