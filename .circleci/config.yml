@@ -26,28 +26,30 @@ jobs:
           npm run test
   
   publish:
-    executor: docker/docker
-    steps:
-      - setup_remote_docker
-      - checkout
-      - docker/check
-      - docker/build:
-          image: anusuyadevi2024/circleci_sample
-      - docker/push:
-          image: anusuyadevi2024/circleci_sample
-    # docker:
-    #   - image: cimg/node:16.10
+    # executor: docker/docker
     # steps:
     #   - setup_remote_docker
     #   - checkout
-    #   - run:
-    #       name: publish Docker Image
-    #       command: |
-    #         docker build -t anusuyadevi2024/circleci_sample:latest .
-    #         echo "DOCKER_USERNAME: $DOCKER_USERNAME"
-    #         echo "DOCKER_PASSWORD: $DOCKER_PASSWORD"
-    #         echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-    #         docker push anusuyadevi2024/circleci_sample:latest
+    #   - docker/check
+    #   - docker/build:
+    #       image: anusuyadevi2024/circleci_sample
+    #       tag:1.0.0
+    #   - docker/push:
+    #       image: anusuyadevi2024/circleci_sample
+    #       tag:1.0.0
+    docker:
+      - image: cimg/node:16.10
+    steps:
+      - setup_remote_docker
+      - checkout
+      - run:
+          name: publish Docker Image
+          command: |
+            docker build -t anusuyadevi2024/circleci_sample:latest .
+            echo "DOCKER_USERNAME: $DOCKER_USERNAME"
+            echo "DOCKER_PASSWORD: $DOCKER_PASSWORD"
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker push anusuyadevi2024/circleci_sample:latest
   # deploy:
   #   docker:
   #       - image: cimg/node:16.10
