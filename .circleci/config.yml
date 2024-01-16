@@ -97,7 +97,6 @@ jobs:
 #       #       - publish
 
 workflows:
-  version: 2
   simple_workflow:
     jobs:
       - build
