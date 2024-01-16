@@ -79,7 +79,26 @@ jobs:
             docker push registry.heroku.com/anusuyadevi-su-devops/web
             heroku container:release web -a anusuyadevi-su-devops
 
+# workflows:
+#   simple_workflow:
+#     jobs:
+#       - build
+#       - test:
+#           requires:
+#             - build
+#       - publish:
+#           requires:
+#             - test
+#       - pull-and-deploy:
+#           requires:
+#             - publish            
+#       # - deploy:
+#       #     requires:
+#       #       - publish
+
+
 workflows:
+  version: 2
   simple_workflow:
     jobs:
       - build
@@ -89,10 +108,23 @@ workflows:
       - publish:
           requires:
             - test
+          filters:
+            branches:
+              only:
+                - release
+      - deploy:
+          requires:
+            - publish
+          filters:
+            branches:
+              only:
+                - release
       - pull-and-deploy:
           requires:
-            - publish            
-      # - deploy:
-      #     requires:
-      #       - publish
+            - publish
+          filters:
+            branches:
+              only:
+                - release
+
 
