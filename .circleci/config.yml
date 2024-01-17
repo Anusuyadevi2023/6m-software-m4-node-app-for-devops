@@ -37,8 +37,7 @@ jobs:
       - docker/check
       - run: docker build -t $IMAGE_NAME .
       - snyk/scan:
-          docker-image-name: $IMAGE_NAME
-          args: --severity-threshold=medium
+          docker-image-name: $IMAGE_NAME --severity-threshold=medium
 
   publish:
     executor: docker/docker
