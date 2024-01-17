@@ -37,13 +37,13 @@ jobs:
         - docker/check
         # - run: docker build -t $IMAGE_NAME .
         - run:
-            command: |
-              docker build -t anusuyadevi2024/circleci_sample:v1.0.1 .
-              echo "DOCKER_USERNAME: $DOCKER_USERNAME"
-              echo "DOCKER_PASSWORD: $DOCKER_PASSWORD"
-              echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+          command: |
+            echo "DOCKER_USERNAME: $DOCKER_USERNAME"
+            echo "DOCKER_PASSWORD: $DOCKER_PASSWORD"
+            echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+            docker build -t $IMAGE_NAME .
         - snyk/scan: 
-            docker-image-name: $IMAGE_NAME
+          docker-image-name: $IMAGE_NAME
 
 
   publish:
