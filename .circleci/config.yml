@@ -3,6 +3,8 @@ orbs:
   node: circleci/node@5.0.1
   docker: circleci/docker@2.1.4
   heroku: circleci/heroku@2.0.0
+  snyk: snyk/snyk@1.5.0
+
 jobs:
   build:
     docker:
@@ -24,6 +26,25 @@ jobs:
       - run: |
           echo “Running tests...”
           npm run test
+  scan:
+      docker:
+        - image: cimg/node:16.10
+      environment:
+        IMAGE_NAME: anusuyadevi2024/circleci_sample
+      steps:
+        - checkout
+        - setup_remote_docker      
+        - docker/check
+        - run: 
+          docker build -t $IMAGE_NAME .
+          # command: |
+          #   docker build -t $IMAGE_NAME .
+          #   echo "DOCKER_USERNAME: $DOCKER_USERNAME"
+          #   echo "DOCKER_PASSWORD: $DOCKER_PASSWORD"
+          #   echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+        - snyk/scan: 
+            docker-image-name: $IMAGE_NAME
+
 
   publish:
     # executor: docker/docker
@@ -79,6 +100,26 @@ jobs:
             docker push registry.heroku.com/anusuyadevi-su-devops/web
             heroku container:release web -a anusuyadevi-su-devops
 
+workflows:
+  simple_workflow:
+    jobs:
+      - build
+      - test:
+          requires:
+            - build
+      - scan:
+          requires:
+           - test
+      - publish:
+          requires:
+            - scan
+      # - pull-and-deploy:
+      #     requires:
+      #       - publish
+      # - deploy:
+      #     requires:
+      #       - publish
+
 # workflows:
 #   simple_workflow:
 #     jobs:
@@ -89,38 +130,21 @@ jobs:
 #       - publish:
 #           requires:
 #             - test
-#       - pull-and-deploy:
-#           requires:
-#             - publish
+#           filters:
+#             branches:
+#               only:
+#                 - release
 #       # - deploy:
 #       #     requires:
 #       #       - publish
-
-workflows:
-  simple_workflow:
-    jobs:
-      - build
-      - test:
-          requires:
-            - build
-      - publish:
-          requires:
-            - test
-          filters:
-            branches:
-              only:
-                - release
-      # - deploy:
-      #     requires:
-      #       - publish
-      #     filters:
-      #       branches:
-      #         only:
-      #           - release
-      - pull-and-deploy:
-          requires:
-            - publish
-          filters:
-            branches:
-              only:
-                - release
+#       #     filters:
+#       #       branches:
+#       #         only:
+#       #           - release
+#       - pull-and-deploy:
+#           requires:
+#             - publish
+#           filters:
+#             branches:
+#               only:
+#                 - release
